@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 200 55% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 55% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 55% 10%;
+
+    /* Navy blue - primary brand color */
+    --primary: 200 55% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    /* Mint green - accent color */
+    --secondary: 143 100% 88%;
+    --secondary-foreground: 200 55% 10%;
+
+    --muted: 200 20% 95%;
+    --muted-foreground: 200 20% 45%;
+
+    --accent: 143 100% 88%;
+    --accent-foreground: 200 55% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 200 20% 90%;
+    --input: 200 20% 95%;
+    --ring: 200 55% 10%;
+
+    --radius: 1rem;
+    
+    /* Custom FinBuddy tokens */
+    --finbuddy-navy: 200 55% 10%;
+    --finbuddy-mint: 143 100% 88%;
+    --finbuddy-mint-dark: 143 60% 50%;
+    --finbuddy-gradient: linear-gradient(135deg, hsl(143 100% 88%), hsl(180 100% 90%));
+    --finbuddy-shadow: 0 4px 20px -2px hsl(200 55% 10% / 0.1);
+    --finbuddy-shadow-lg: 0 10px 40px -5px hsl(200 55% 10% / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 200 55% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 200 40% 15%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 200 40% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 143 100% 88%;
+    --primary-foreground: 200 55% 10%;
+
+    --secondary: 200 30% 20%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 200 30% 20%;
+    --muted-foreground: 200 10% 65%;
+
+    --accent: 143 100% 88%;
+    --accent-foreground: 200 55% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 200 30% 25%;
+    --input: 200 30% 20%;
+    --ring: 143 100% 88%;
+    
+    --finbuddy-navy: 200 55% 95%;
+    --finbuddy-mint: 143 100% 88%;
+    --finbuddy-mint-dark: 143 60% 50%;
+    --finbuddy-gradient: linear-gradient(135deg, hsl(143 100% 88%), hsl(180 100% 90%));
+    --finbuddy-shadow: 0 4px 20px -2px hsl(0 0% 0% / 0.3);
+    --finbuddy-shadow-lg: 0 10px 40px -5px hsl(0 0% 0% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
