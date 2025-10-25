@@ -6,8 +6,8 @@ services:
     name: finbuddy-fullstack
     env: node
     plan: free
-    buildCommand: npm run build:fullstack
-    startCommand: npm run free
+    buildCommand: npm install && npm run build && cd backend && npm install
+    startCommand: cd backend && node freeServer.js
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
