@@ -2,7 +2,8 @@
   "name": "finbuddy-backend",
   "version": "1.0.0",
   "description": "AI-powered finance chatbot backend",
-  "main": "server.js",
+  "main": "freeServer.js",
+  "type": "commonjs",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
