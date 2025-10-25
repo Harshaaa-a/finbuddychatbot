@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 // Use completely free services
@@ -9,7 +10,11 @@ const FreeAIService = require('./services/freeAiService');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🎉 Starting 100% FREE FinBuddy Backend - No API keys required!');
+// Serve static files from the frontend build
+const frontendBuildPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(frontendBuildPath));
+
+console.log('🎉 Starting 100% FREE FinBuddy Full-Stack App - No API keys required!');
 
 // Initialize free services
 const financeService = new FreeFinanceService();
@@ -19,13 +24,14 @@ const aiService = new FreeAIService(financeService);
 app.use(cors());
 app.use(express.json());
 
-// Welcome message
-app.get('/', (req, res) => {
+// API Welcome message (for direct API access)
+app.get('/api', (req, res) => {
   res.json({
-    message: "🎉 Welcome to FinBuddy FREE Backend!",
-    version: "1.0.0-free",
+    message: "🎉 Welcome to FinBuddy FREE Full-Stack App!",
+    version: "1.0.0-fullstack-free",
     features: [
       "100% free - no API keys required",
+      "Full-stack React + Node.js application",
       "Intelligent AI responses with financial expertise",
       "Real-time market data from free sources",
       "Financial news from multiple sources",
@@ -39,7 +45,7 @@ app.get('/', (req, res) => {
       news: "GET /finance/news",
       data: "GET /finance/data"
     },
-    note: "This free version provides excellent financial advice without requiring any paid API services!"
+    note: "This free version provides excellent financial advice without requiring any paid API services! Visit the root URL for the web interface."
   });
 });
 
@@ -208,28 +214,35 @@ app.use((error, req, res, next) => {
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Endpoint not found',
-    message: `${req.method} ${req.path} is not available`,
-    availableEndpoints: ['GET /', 'GET /health', 'POST /chat', 'GET /finance/data', 'GET /demo'],
-    cost: 'FREE to use!'
-  });
+// Catch-all handler: send back React's index.html file for client-side routing
+app.get('*', (req, res) => {
+  // Only serve index.html for non-API routes
+  if (!req.path.startsWith('/api/') && !req.path.startsWith('/health') && !req.path.startsWith('/chat') && !req.path.startsWith('/finance')) {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  } else {
+    res.status(404).json({
+      success: false,
+      error: 'Endpoint not found',
+      message: `${req.method} ${req.path} is not available`,
+      availableEndpoints: ['GET /', 'GET /health', 'POST /chat', 'GET /finance/data', 'GET /demo'],
+      cost: 'FREE to use!'
+    });
+  }
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 FinBuddy FREE Backend running on port ${PORT}`);
+  console.log(`🚀 FinBuddy FREE Full-Stack App running on port ${PORT}`);
   console.log(`💰 100% FREE - No API keys required!`);
+  console.log(`🌐 Serving React frontend + Node.js backend`);
   console.log(`🤖 Intelligent AI with deep financial knowledge`);
   console.log(`📊 Real-time market data from free sources`);
   console.log(`🎯 Smart fallbacks ensure 24/7 availability`);
   console.log(`🔥 Zero costs - Perfect for development and production!`);
-  console.log(`\n📈 Test it: curl http://localhost:${PORT}/demo`);
-  console.log(`💬 Chat: POST http://localhost:${PORT}/chat`);
-  console.log(`✅ Health: http://localhost:${PORT}/health\n`);
+  console.log(`\n🌐 Web App: http://localhost:${PORT}`);
+  console.log(`📈 API Demo: http://localhost:${PORT}/demo`);
+  console.log(`💬 Chat API: POST http://localhost:${PORT}/chat`);
+  console.log(`✅ Health Check: http://localhost:${PORT}/health\n`);
 });
 
 // Graceful shutdown

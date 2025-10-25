@@ -1,13 +1,13 @@
-# Render Configuration for FinBuddy Backend
+# Render Configuration for FinBuddy Full Stack App
 # This file is used by Render.com for deployment
 
 services:
   - type: web
-    name: finbuddy-backend
+    name: finbuddy-fullstack
     env: node
     plan: free
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && npm run free
+    buildCommand: npm run build:fullstack
+    startCommand: npm run free
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
