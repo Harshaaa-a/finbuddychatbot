@@ -2,7 +2,7 @@
 // Configuration
 const CONFIG = {
     API_BASE: 'https://ejtsnpnkrlqkcbfufzpg.supabase.co/functions/v1',
-    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdHNucG5rcmxxa2NiZnVmenBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAwMzE0NzQsImV4cCI6MjA0NTYwNzQ3NH0.YmVhZGVkZGVhZGJlZWZkZWFkYmVlZmRlYWRiZWVmZGVhZGJlZWZkZWFkYmVlZg' // Replace with your actual anon key
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdHNucG5rcmxxa2NiZnVmenBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NjI5MzMsImV4cCI6MjA3NzEzODkzM30.ZYHsMfYByKW3IyWEkDU21X_PVcu5l87t14LX6QpK4g8'
 };
 
 // Global state
@@ -17,54 +17,77 @@ const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
 const loadingOverlay = document.getElementById('loadingOverlay');
 const characterCount = document.getElementById('characterCount');
+const welcomeInput = document.getElementById('welcomeInput');
+const welcomeButton = document.getElementById('welcomeButton');
 
 // Initialize app
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     setupEventListeners();
     updateCharacterCount();
 });
 
 // Event Listeners
 function setupEventListeners() {
+    // Welcome input events
+    welcomeInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            startChat();
+        }
+    });
+
     // Message input events
-    messageInput.addEventListener('keypress', function(e) {
+    messageInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             sendMessage();
         }
     });
-    
+
     messageInput.addEventListener('input', updateCharacterCount);
-    
+
     // Send button
     sendButton.addEventListener('click', sendMessage);
-}// Qui
-ck question function
-function askQuestion(question) {
-    messageInput.value = question;
+    
+    // Welcome button
+    welcomeButton.addEventListener('click', startChat);
+}
+
+// Start chat function
+function startChat() {
+    const message = welcomeInput.value.trim();
+    
+    if (!message || isLoading) return;
+    
+    // Show chat container
+    welcomeSection.style.display = 'none';
+    chatContainer.style.display = 'flex';
+    
+    // Set the message in chat input and send
+    messageInput.value = message;
     sendMessage();
 }
 
 // Send message function
 async function sendMessage() {
     const message = messageInput.value.trim();
-    
+
     if (!message || isLoading) return;
-    
+
     // Show chat container if first message
     if (messageCount === 0) {
         welcomeSection.style.display = 'none';
         chatContainer.style.display = 'flex';
     }
-    
+
     // Add user message
     addMessage(message, 'user');
     messageInput.value = '';
     updateCharacterCount();
-    
+
     // Show loading
     setLoading(true);
-    
+
     try {
         const response = await fetch(`${CONFIG.API_BASE}/chat`, {
             method: 'POST',
@@ -74,15 +97,15 @@ async function sendMessage() {
             },
             body: JSON.stringify({ message })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             addMessage(data.message, 'bot');
         } else {
             addMessage(data.error || 'Sorry, I encountered an error. Please try again.', 'bot', true);
         }
-        
+
     } catch (error) {
         console.error('Chat error:', error);
         addMessage('Sorry, I\'m having trouble connecting. Please check your internet connection and try again.', 'bot', true);
@@ -94,13 +117,13 @@ async function sendMessage() {
 // Add message to chat
 function addMessage(text, sender, isError = false) {
     messageCount++;
-    
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}-message`;
-    
+
     const avatar = sender === 'user' ? '👤' : '🤖';
     const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
+
     messageDiv.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div class="message-content">
@@ -108,7 +131,7 @@ function addMessage(text, sender, isError = false) {
             <div class="message-time">${time}</div>
         </div>
     `;
-    
+
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
@@ -118,7 +141,7 @@ function setLoading(loading) {
     isLoading = loading;
     sendButton.disabled = loading;
     messageInput.disabled = loading;
-    
+
     if (loading) {
         loadingOverlay.style.display = 'flex';
     } else {
@@ -130,7 +153,7 @@ function setLoading(loading) {
 function updateCharacterCount() {
     const count = messageInput.value.length;
     characterCount.textContent = `${count}/500`;
-    
+
     if (count > 450) {
         characterCount.style.color = '#e53e3e';
     } else if (count > 400) {
@@ -154,7 +177,7 @@ function closeModal(modalId) {
 }
 
 // Close modal when clicking outside
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
     }
@@ -165,7 +188,7 @@ function addSampleMessages() {
     setTimeout(() => {
         addMessage("What are mutual funds?", 'user');
     }, 1000);
-    
+
     setTimeout(() => {
         addMessage("Mutual funds are investment vehicles that pool money from multiple investors to purchase a diversified portfolio of stocks, bonds, or other securities. They offer professional management and diversification, making them suitable for investors who want exposure to various assets without picking individual securities.", 'bot');
     }, 2000);
