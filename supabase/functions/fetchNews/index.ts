@@ -1,12 +1,14 @@
-/**
- * Scheduled News Fetcher Function
- * Fetches latest financial news and updates the database
- * Designed to run on Supabase cron schedule (every 6 hours)
- */
+// Standalone FetchNews Function for FinBuddy
+// All dependencies included in this single file for reliable deployment
 
 import { serve } from "https://deno.land/std@0.208.0/http/server.ts"
-import { newsStorageService } from "../_shared/news-storage.ts"
-import { corsHeaders } from "../_shared/config.ts"
+
+// Configuration constants
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+}
 
 interface FetchNewsResponse {
   success: boolean
