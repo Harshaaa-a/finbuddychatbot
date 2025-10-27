@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinBuddy - AI Financial Advisor</title>
+    <meta name="description" content="Get personalized financial advice powered by AI. Ask about investments, mutual funds, SIPs, and more.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">FinBuddy</span>
+                </div>
+                <div class="tagline">Your AI Financial Advisor</div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Welcome Message -->
+                <div class="welcome" id="welcome">
+                    <h1>Hello! I'm FinBuddy 👋</h1>
+                    <p>I'm here to help you with financial advice, investment guidance, and answer your money-related questions.</p>
+                    
+                    <!-- Quick Questions -->
+                    <div class="quick-questions">
+                        <h3>Try asking me:</h3>
+                        <div class="question-buttons">
+                            <button class="question-btn" onclick="askQuestion('What are mutual funds?')">
+                                What are mutual funds?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('How does SIP work?')">
+                                How does SIP work?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('Should I invest in stocks?')">
+                                Should I invest in stocks?
+                            </button>
+                            <button class="question-btn" onclick="askQuestion('How to start investing?')">
+                                How to start investing?
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="chat-container" id="chatContainer" style="display: none;">
+                    <!-- Messages -->
+                    <div class="messages" id="messages">
+                        <div class="message bot-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-text">
+                                    Hello! I'm FinBuddy, your AI financial advisor. Ask me about investments, mutual funds, SIPs, or any financial questions!
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="input-area">
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="messageInput" 
+                                placeholder="Ask me about investments, mutual funds, SIPs..."
+                                maxlength="500"
+                            >
+                            <button id="sendButton" onclick="sendMessage()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="input-footer">
+                            <span class="character-count" id="characterCount">0/500</span>
+                            <span class="powered-by">Powered by AI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 FinBuddy. AI-powered financial advice for everyone.</p>
+                <div class="footer-links">
+                    <a href="#" onclick="showDisclaimer()">Disclaimer</a>
+                    <a href="#" onclick="showAbout()">About</a>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>FinBuddy is thinking...</p>
+        </div>
+
+        <!-- Disclaimer Modal -->
+        <div class="modal" id="disclaimerModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Important Disclaimer</h3>
+                    <button class="modal-close" onclick="closeModal('disclaimerModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Investment Disclaimer:</strong></p>
+                    <ul>
+                        <li>FinBuddy provides general financial information and educational content only</li>
+                        <li>This is not personalized financial advice or investment recommendations</li>
+                        <li>Always consult with a qualified financial advisor before making investment decisions</li>
+                        <li>Past performance does not guarantee future results</li>
+                        <li>All investments carry risk of loss</li>
+                    </ul>
+                    <p>Please do your own research and consider your financial situation before investing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
