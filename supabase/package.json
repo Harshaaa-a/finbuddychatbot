@@ -1,0 +1,23 @@
+{
+  "name": "finbuddy-backend",
+  "version": "1.0.0",
+  "description": "FinBuddy Backend - AI Finance Chatbot with News Integration",
+  "scripts": {
+    "deploy": "../deploy.sh",
+    "deploy:chat": "supabase functions deploy chat --no-verify-jwt",
+    "deploy:news": "supabase functions deploy fetchNews --no-verify-jwt",
+    "deploy:db": "supabase db push",
+    "dev": "supabase functions serve",
+    "test": "deno test --allow-all",
+    "lint": "deno lint"
+  },
+  "keywords": [
+    "fintech",
+    "ai",
+    "chatbot",
+    "supabase",
+    "edge-functions"
+  ],
+  "author": "FinBuddy Team",
+  "license": "MIT"
+}
