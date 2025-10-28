@@ -61,9 +61,5 @@ refresh_token_reuse_interval = 10
 # Allow/disallow new user signups to your project.
 enable_signup = true
 
-[edge_functions]
+[functions]
 enabled = true
-# Configure one of the supported bundlers: esbuild | rollup | webpack
-bundler = "esbuild"
-# Configure how to watch for changes: fs | watchman
-watcher = "fs"

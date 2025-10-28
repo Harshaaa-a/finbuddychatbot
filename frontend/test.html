@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinBuddy Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            min-height: 100vh;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .test-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+        .response {
+            background: #f0fdf4;
+            border: 1px solid #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            min-height: 50px;
+        }
+        .loading {
+            color: #059669;
+            font-style: italic;
+        }
+        .error {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="color: #059669; text-align: center;">🤖 FinBuddy Test Interface</h1>
+        <p style="text-align: center; color: #6b7280;">Test the chat functionality with mint green styling</p>
+        
+        <input type="text" id="testInput" class="test-input" placeholder="Ask me about investments, stocks, or financial advice..." maxlength="500">
+        <button onclick="testChat()" class="test-button">Send Message</button>
+        
+        <div id="response" class="response">
+            Ready to chat! Type your question above and click Send Message.
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3 style="color: #059669;">Sample Questions:</h3>
+            <ul style="color: #4b5563;">
+                <li><button onclick="setQuestion('What are mutual funds?')" class="test-button" style="padding: 5px 10px; font-size: 14px;">What are mutual funds?</button></li>
+                <li><button onclick="setQuestion('How should I start investing?')" class="test-button" style="padding: 5px 10px; font-size: 14px;">How should I start investing?</button></li>
+                <li><button onclick="setQuestion('What is the current market situation?')" class="test-button" style="padding: 5px 10px; font-size: 14px;">What is the current market situation?</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://ejtsnpnkrlqkcbfufzpg.supabase.co/functions/v1';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqdHNucG5rcmxxa2NiZnVmenBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1NjI5MzMsImV4cCI6MjA3NzEzODkzM30.ZYHsMfYByKW3IyWEkDU21X_PVcu5l87t14LX6QpK4g8';
+
+        function setQuestion(question) {
+            document.getElementById('testInput').value = question;
+        }
+
+        async function testChat() {
+            const input = document.getElementById('testInput');
+            const response = document.getElementById('response');
+            const message = input.value.trim();
+
+            if (!message) {
+                response.innerHTML = '<span class="error">Please enter a message first!</span>';
+                return;
+            }
+
+            response.innerHTML = '<span class="loading">🤔 FinBuddy is thinking...</span>';
+
+            try {
+                const apiResponse = await fetch(`${API_BASE}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({ message })
+                });
+
+                const data = await apiResponse.json();
+
+                if (data.success) {
+                    response.innerHTML = `
+                        <strong>✅ Success!</strong><br>
+                        <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">
+                            ${data.message}
+                        </div>
+                    `;
+                } else {
+                    response.innerHTML = `
+                        <span class="error">
+                            <strong>❌ Error:</strong><br>
+                            ${data.error || 'Unknown error occurred'}
+                        </span>
+                    `;
+                }
+            } catch (error) {
+                response.innerHTML = `
+                    <span class="error">
+                        <strong>🔌 Connection Error:</strong><br>
+                        ${error.message}
+                    </span>
+                `;
+            }
+        }
+
+        // Allow Enter key to send message
+        document.getElementById('testInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                testChat();
+            }
+        });
+    </script>
+</body>
+</html>
